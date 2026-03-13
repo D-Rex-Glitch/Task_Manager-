@@ -31,3 +31,21 @@ export function getUserName() {
   if (typeof window === "undefined") return null;
   return localStorage.getItem(NAME_KEY);
 }
+
+export function getUserEmail() {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(EMAIL_KEY);
+}
+
+export function updateAuthProfile(profile) {
+  if (!profile) return;
+  if (profile.name) {
+    localStorage.setItem(NAME_KEY, profile.name);
+  }
+  if (profile.email) {
+    localStorage.setItem(EMAIL_KEY, profile.email);
+  }
+  if (profile.role) {
+    localStorage.setItem(ROLE_KEY, profile.role);
+  }
+}
