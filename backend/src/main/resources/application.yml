@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/task_management_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+jwt:
+  secret: ${JWT_SECRET:VGhpc0lzQVNlY3VyZTY0Q2hhcmFjdGVyTWluaW11bVNlY3JldEtleUZvckpXVFRva2Vu}
+  expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
+app:
+  seed-admin-email: ${SEED_ADMIN_EMAIL:admin@local.com}
+  seed-admin-password: ${SEED_ADMIN_PASSWORD:Admin@123}
+
+server:
+  port: ${SERVER_PORT:8080}
