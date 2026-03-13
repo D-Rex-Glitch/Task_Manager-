@@ -28,8 +28,10 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="container" style={{ maxWidth: 460 }}>
-      <h2>Register</h2>
+    <div className="auth-shell">
+      <div className="container auth-card">
+      <h2 className="auth-title">Create account</h2>
+      <p className="auth-subtitle">Start managing your tasks in one place.</p>
       <form onSubmit={onSubmit}>
         <div className="field">
           <label>Name</label>
@@ -40,7 +42,7 @@ export default function RegisterPage() {
             onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
           />
         </div>
-        <div className="field" style={{ marginTop: 10 }}>
+        <div className="field">
           <label>Email</label>
           <input
             type="email"
@@ -49,7 +51,7 @@ export default function RegisterPage() {
             onChange={(e) => setForm((prev) => ({ ...prev, email: e.target.value }))}
           />
         </div>
-        <div className="field" style={{ marginTop: 10 }}>
+        <div className="field">
           <label>Password</label>
           <input
             type="password"
@@ -59,14 +61,15 @@ export default function RegisterPage() {
             onChange={(e) => setForm((prev) => ({ ...prev, password: e.target.value }))}
           />
         </div>
-        <button type="submit" disabled={loading} style={{ marginTop: 12, width: "100%" }}>
+        <button type="submit" disabled={loading} className="auth-btn">
           {loading ? "Please wait..." : "Register"}
         </button>
       </form>
       {error && <p className="error">{error}</p>}
-      <p className="muted">
+      <p className="muted auth-footer">
         Already have an account? <Link href="/login">Login here</Link>
       </p>
+      </div>
     </div>
   );
 }

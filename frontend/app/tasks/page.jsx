@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "../../lib/api";
-import { clearAuth, getRole, getToken, getUserName } from "../../lib/auth";
+import { getRole, getToken, getUserName } from "../../lib/auth";
 
 const emptyForm = {
   title: "",
@@ -29,9 +29,7 @@ export default function TasksPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-
-  const role = getRole();
-  const userName = getUserName();
+  const [userMeta, setUserMeta] = useState({ role: "USER", userName: "User" });
 
   const fetchTasks = async (targetPage = page) => {
     setLoading(true);
@@ -62,6 +60,10 @@ export default function TasksPage() {
       router.replace("/login");
       return;
     }
+    setUserMeta({
+      role: getRole() || "USER",
+      userName: getUserName() || "User"
+    });
     fetchTasks(0);
   }, [router, statusFilter, priorityFilter, sortBy, direction]);
 
@@ -115,22 +117,12 @@ export default function TasksPage() {
     }
   };
 
-  const logout = () => {
-    clearAuth();
-    router.replace("/login");
-  };
-
   return (
     <div className="container">
-      <div className="topbar">
-        <div>
-          <h2 style={{ margin: 0 }}>Task Management</h2>
-          <small className="muted">
-            Signed in as {userName || "User"} ({role || "USER"})
-          </small>
-        </div>
-        <button onClick={logout}>Logout</button>
-      </div>
+      <h2 style={{ margin: 0 }}>Task Management</h2>
+      <small className="muted">
+        Signed in as {userMeta.userName} ({userMeta.role})
+      </small>
 
       <form onSubmit={onSave}>
         <h3>{editingId ? "Update Task" : "Create Task"}</h3>

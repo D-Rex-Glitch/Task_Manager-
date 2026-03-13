@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/task_management_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    url: ${DB_URL:jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:task_management_db}?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
     username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:root}
+    password: ${DB_PASSWORD:Akash}
   jpa:
     hibernate:
       ddl-auto: update
@@ -20,4 +20,4 @@ app:
   seed-admin-password: ${SEED_ADMIN_PASSWORD:Admin@123}
 
 server:
-  port: ${SERVER_PORT:8080}
+  port: ${SERVER_PORT:8087}
