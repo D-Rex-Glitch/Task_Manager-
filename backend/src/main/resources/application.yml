@@ -20,4 +20,4 @@ app:
   seed-admin-password: ${SEED_ADMIN_PASSWORD:Admin@123}
 
 server:
-  port: ${SERVER_PORT:8087}
+  port: ${SERVER_PORT:8089}
