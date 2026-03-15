@@ -1,9 +1,19 @@
 package com.example.taskmanagement.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
 import com.example.taskmanagement.dto.TaskPageResponse;
 import com.example.taskmanagement.dto.TaskRequest;
 import com.example.taskmanagement.dto.TaskResponse;
-import com.example.taskmanagement.entity.Role;
 import com.example.taskmanagement.entity.Task;
 import com.example.taskmanagement.entity.TaskPriority;
 import com.example.taskmanagement.entity.TaskStatus;
@@ -13,16 +23,8 @@ import com.example.taskmanagement.exception.ResourceNotFoundException;
 import com.example.taskmanagement.repository.TaskRepository;
 import com.example.taskmanagement.repository.UserRepository;
 import com.example.taskmanagement.security.UserPrincipal;
+
 import jakarta.persistence.criteria.Predicate;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 
 @Service
 public class TaskService {
@@ -41,13 +43,10 @@ public class TaskService {
         Pageable pageable = PageRequest.of(page, size, sort);
 
         User currentUser = getCurrentUser();
-        boolean admin = currentUser.getRole() == Role.ADMIN;
 
         Specification<Task> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if (!admin) {
-                predicates.add(cb.equal(root.get("owner").get("id"), currentUser.getId()));
-            }
+            predicates.add(cb.equal(root.get("owner").get("id"), currentUser.getId()));
             if (status != null) {
                 predicates.add(cb.equal(root.get("status"), status));
             }
@@ -96,7 +95,7 @@ public class TaskService {
     private Task getAuthorizedTask(Long id) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         User currentUser = getCurrentUser();
-        if (currentUser.getRole() != Role.ADMIN && !task.getOwner().getId().equals(currentUser.getId())) {
+        if (!task.getOwner().getId().equals(currentUser.getId())) {
             throw new BadRequestException("Task not accessible");
         }
         return task;
